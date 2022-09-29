@@ -36,8 +36,8 @@ only forth
 \ Some more WiFi words
 
 \ >>>>>>>>>>>>>>>>>>>>> EDIT THESE to suit your router name and password <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-z" VodafoneConnect83684821" value routername
-z" pumtvtz8dhud5bc"         value password  
+z" YourRouterName" value routername
+z" YourRouterPassword"         value password  
 
 
 \ case statement
