@@ -1,11 +1,8 @@
 TRACE - originally by Mark Wills - see https://www.bernd-paysan.de/screenful.html
 \ Adapted for ESP32forth by Bob Edwards Sept 2022
 \ A small piece of code, but very effective at showing word flow  & entry and exit data stack conditions
-<<<<<<< HEAD
 \ It's very simple so easily understood and added to 
-=======
-\ It's very simple, so easily understood and added to 
->>>>>>> 350a8f7e998f83aea858cc8e82fe8969974baf0c
+
 
 DEFINED? *TRACE* [IF] forget *TRACE* [THEN] 
 : *TRACE* ;
@@ -44,11 +41,7 @@ CREATE BLIST 15 CELLS ALLOT
 
 : >indents ( -- ) 0 indents MAX 12 MIN SPACES ;
 
-<<<<<<< HEAD
-: .stack ( -- ) ." [ d-stack " DEPTH ?DUP IF 1 SWAP DO I 1- PICK . -1
-=======
 : .stack ( -- ) ." [ " DEPTH ?DUP IF 1 SWAP DO I 1- PICK . -1
->>>>>>> 350a8f7e998f83aea858cc8e82fe8969974baf0c
   +LOOP ." ]" ELSE ." empty ]" THEN  ;
 
 : .name ( CFA -- ) >NAME TYPE ;
