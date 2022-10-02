@@ -3,7 +3,7 @@
 \ you just want to run a few lines of forth from disk
 \ The dictionary will be searched  for the word first, if not found then ...
 \ The spiffs drive will be searched for a file of the same name. If found it will load, else an error displayed
-\ the file can contain a list of commands to interpret or a words to compile, run & forget etc
+\ the file can contain a list of commands to interpret or words to compile, run & forget etc
 \ The feature can be turned on with ON BATCH and normal 'word not found'
 \ behaviour restored with OFF BATCH
 
@@ -35,7 +35,7 @@ DEFINED? *BATCH* [IF] forget *BATCH* [THEN]
     cell - +!                                   \ update the string length
 ;
 
-\ If flag=true, word a , n not found - try executing a batch file in the root folder of disk
+\ If flag=true, word a , n has not found - try executing a batch file in the root folder of disk
 : (BATCH)           ( a n flag -- )
     IF
         S" /spiffs/" filename $!                 \ filename = root directory
