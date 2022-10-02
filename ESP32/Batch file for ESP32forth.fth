@@ -15,9 +15,7 @@ only forth also internals
 DEFINED? *BATCH* [IF] forget *BATCH* [THEN] 
 : *BATCH* ;
 
-
 20 string filename                              \ 20 chr filename stringvar
-: root s" /spiffs/" ;                           \ the spiff root directory
 
 : ON -1 ;
 : OFF 0 ;
