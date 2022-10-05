@@ -1,7 +1,7 @@
 \ Mini-OOF by Bernd Paysan https://bernd-paysan.de/mini-oof.html
 \ Adapted for ESP32Forth32 7.0.5.4 and onwards by Bob Edwards July 2022 ver 3
 \ Mini-OOF offers no protection against programming errors, nor 'information hiding'
-\ This version of Mini-OOF is multitasker compatible - each task can have it's own 'current object'
+\ This version of Mini-OOF is multitasker compatible
 
 ONLY FORTH DEFINITIONS
 
