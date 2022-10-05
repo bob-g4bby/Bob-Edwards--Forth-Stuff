@@ -1,4 +1,4 @@
-queu\ Queues for ESP32forth ver1 - Bob Edwards Sept 2022
+\ Queues for ESP32forth ver1 - Bob Edwards Sept 2022
 \ Useful for passing messages between tasks in a multitask application
 \ sharing a resource between tasks etc.
 \ As many queues as you wish can be made using the QUEUE word - see below
