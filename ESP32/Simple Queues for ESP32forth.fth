@@ -4,6 +4,9 @@
 \ As many queues as you wish can be made using the QUEUE word - see below
 \ This is also an example of 'hand made' object oriented programming
 
+\ 'Streams' built in to ESP32forth uses bytes
+\ This library uses cells
+
 forth definitions
 hex
 
