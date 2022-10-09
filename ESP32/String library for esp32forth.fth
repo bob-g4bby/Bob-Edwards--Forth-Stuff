@@ -97,6 +97,11 @@ variable ($temp3) \ reserved for internal use
  \ Modern compilers will inline this.
  state @ if postpone @ else @ then ; immediate
 
+\ helper word for rot and -rot
+: (rot)     ( -- bytecount )
+    ($sp@) (sizeOf$)   1 (addrOf$) (sizeOf$)   2 (addrOf$) (sizeOf$) + +
+;
+
 forth definitions
 only forth also internals
 
@@ -235,25 +240,25 @@ only forth also internals
 : rot$ ( -- ) ( ss: s3 s2 s1 -- s2 s1 s3) \ "rotate strings"
  \ Rotates the top three string to the left.
  \ The third string moves to the top of the string stack.
-($sp@)                                                                  \ save this addr for stack pointer
+($sp@)                   \ save this addr for stack pointer
  2 pick$ 
- ($sp@) 1 (addrOf$)                                                     \ source & destination
- ($sp@) (sizeOf$)   1 (addrOf$) (sizeOf$)   2 (addrOf$) (sizeOf$) + +   \ number of bytes
+ ($sp@) 1 (addrOf$)      \ source & destination
+ (rot)                   \ number of bytes
  cmove>
- ($sp) !                                                                \ save stack pointer
- -1 ($depth) +!                                                         \ and fix depth
+ ($sp) !                 \ save stack pointer
+ -1 ($depth) +!          \ and fix depth
  ;
  
 : -rot$ ( -- ) ( ss: s3 s2 s1 -- s1 s3 s2) \ "rotate strings"
  \ Rotates the top three string to the right.
  \ The top string moves to the third position.
- ($sp@)                                                                  \ save this addr for stack pointer
+ ($sp@)                   \ save this addr for stack pointer
  2 pick$ 2 pick$
  ($sp@) 2 (addrOf$)
- ($sp@) (sizeOf$)   1 (addrOf$) (sizeOf$)   2 (addrOf$) (sizeOf$) + +   \ number of bytes
+ (rot)                    \ number of bytes
  cmove>
-  ($sp) !                                                                \ save stack pointer
- -2 ($depth) +!                                                         \ and fix depth
+  ($sp) !                 \ save stack pointer
+ -2 ($depth) +!           \ and fix depth
  ;
  
 : len$ ( -- len ) ( ss: -- ) \ "length of string"
