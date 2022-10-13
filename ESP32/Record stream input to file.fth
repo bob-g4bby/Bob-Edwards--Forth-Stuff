@@ -1,11 +1,11 @@
-\ RECORDFILE allows the programmer to make as many files on the SPIFFS drive as he wants, loaded from
+\ RECORDFILE allows the programmer to make as many files on the SPIFFS drive as needed, loaded from
 \ a single source file on the PC. Each SPIFFS file is defined in the source file as
 \ RECORDFILE /spiffs/yourfilename
 \ text text text
 \ text text text
 \ etc
 \ <EOF>
-\ ... and repeat as many times as you want a SPIFF file to be created and filled
+\ ... and repeat as many times as you want a SPIFFS file to be created and filled
 
 \ N.B. <EOF> which stands for 'end of file' MUST be located on column 0 else it won't terminate the file
 \ Have a look at 'Record stream input to file test.fth' and try it out - it creates three small SPIFFS files
