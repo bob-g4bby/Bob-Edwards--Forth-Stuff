@@ -1,7 +1,7 @@
 \ Batch file for ESP32forth ver 1 by Bob Edwards Oct 2022
 \ Typing INCLUDE /spiffs/mybatchfilename is a bit of a mouthful if
 \ you just want to run a few lines of forth from disk
-\ With the help of this code, the dictionary will be searched  for an unknown word first, if not found then
+\ With the help of this code, the dictionary will be searched for a word first, if not found then
 \ the spiffs drive will be searched for a file of the same name. If found it will load, else an error displayed
 \ the file can contain a list of commands to interpret or words to compile, run & forget etc
 \ The feature can be turned on with ON BATCH and normal 'word not found' behaviour restored with OFF BATCH

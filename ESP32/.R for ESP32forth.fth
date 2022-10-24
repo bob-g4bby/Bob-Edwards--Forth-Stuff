@@ -10,7 +10,7 @@ begin                   \ count how many numbers to print
 until
 r> r>
 dup 0< if
-         swap 1+ swap    \ add one for any negtaive sign
+         swap 1+ swap    \ add one for any negative sign
        then
 sign
 swap >r
