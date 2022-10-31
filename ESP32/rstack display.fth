@@ -14,9 +14,15 @@ RP@ 2 cells + value USERRP0             \ RSTACK base address prior to executing
     ." ]"
 ;
 
+: ROVER                                 \ copy 2nd R stack entry to data stack
+    RP@ 2 cells - @ ;
+
 : TEST1 1 >R 2 >R 3 >R .rstack rdrop rdrop rdrop ;
 
 : TEST2 .rstack ;
 
+: TEST3 1 >R 2 >R 3 >R ROVER . rdrop rdrop rdrop ;
+
 TEST1 CR
 TEST2 CR
+TEST3 CR
