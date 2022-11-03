@@ -40,7 +40,7 @@ END-CLASS TIMER
 		R@ STARTTIME !							\ save the present time
 		R> TCODE @ EXECUTE						\ run cfa stored in TCODE
 	ELSE
-		DROP R> DROP							\ else forget the present time
+		DROP RDROP  							\ else forget the present time
 	THEN
 ; TIMER DEFINES TRUN	( -- )					\ run TCODE every PERIOD ms
 
