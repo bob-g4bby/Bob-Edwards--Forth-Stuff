@@ -7,7 +7,7 @@
 IFDEF *MINI-OOF*
 	FORGET *MINI-OOF*
 }
-pub *MINI-OOF* ." Mini object oriented forth version 5 for Taqoz Reloaded v2.8" ;
+pub *MINI-OOF* ." Mini object oriented forth version 6 for Taqoz Reloaded v2.8" ;
 
 pub CREATE	( -- )
 	[C] GRAB
@@ -145,7 +145,8 @@ pub ANON ( -- cfa ) 					--- Remove dictionary entry of last word defined, leave
 --- These three words utilise the L stack as the 'current object' stack
 
 --- push the current object onto the L stack
-ALIAS >L WITH	( obj -- )
+pub WITH 	    ( obj -- )
+    >L ;
 
 --- read the current object
 pub THIS		( -- obj )
