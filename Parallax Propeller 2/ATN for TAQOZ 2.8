@@ -1,0 +1,70 @@
+
+--- Extension for Synchronising Execution between COGS ver1 for Taqoz Reloaded v2.8 - Bob Edwards May 2021
+--- Requires the assembler be pre-loaded
+--- Pause execution waiting for an ATN flag from another cog
+
+--- The cog waits for the ATN flag for up to 'clocks' ticks. 
+--- If ATN occurs before timeout, 'flag' = 1, else if timedout, 'flag' = 0
+code WAITATN				( clocks -- flag ) 
+		getct xx			' read the bottom half of the 64 bit system counter
+		add a,xx
+		setq a				' timeout set for when the system counter = a
+		waitatn	wc			' wait for atn flag
+_ret_	wrnc a				' a = carry flag
+end
+
+
+
+--- Just loop until an ATN flag is received, using POLLATN
+pub SLAVE1		( -- )
+	BEGIN
+			POLLATN
+			IF
+				." Slave1 received ATN, thanks!" CRLF
+			ELSE
+				250 ms
+				." Slave1, no ATN seen this time" CRLF
+			THEN
+	AGAIN
+;
+
+
+pub SLAVE2		( timeout -- )
+	BEGIN
+		200000000 WAITATN
+		IF
+			." Slave2 received ATN, thanks!" CRLF
+		ELSE
+			." Slave2 timed out!" CRLF
+		THEN
+	AGAIN
+;
+
+
+--- Output a message to show the MASTER looping. Set cog 5 AND 6
+ ATN flag on each pass
+: MASTER		( -- )
+	BEGIN
+		200 ms
+		." Hello from the Master, wake up cog 5 & 6
+		" CRLF
+		%1100000 COGATN						--- Send ATN to cog 5 and 6
+		KEY
+	UNTIL
+;
+
+--- set master and both slaves going
+pub DEMO	( -- )
+	%ERSCN %HOME
+	%BOLD ." Press any key to stop" %PLAIN CRLF
+	' SLAVE2 5 RUN
+	' SLAVE1 6 RUN
+	MASTER
+	5 s
+	5 COGSTOP
+	6 COGSTOP
+	%BOLD ." The Slave loops were synchronised to ATN flags from the Master, until it was stopped" CRLF
+	." after which, they free-ran because they were no longer receiving those flags" %PLAIN CRLF
+;
+
+
