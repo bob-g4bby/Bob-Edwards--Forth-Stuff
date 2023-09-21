@@ -42,3 +42,9 @@ DECIMAL
     R> BASE !
 ;
 
+( Dump a string contents )
+: DUMP$      ( adr n -- )
+    DROP
+    DUP 2 - C@   ( reveal the max count of the string )
+    DUMP
+;
