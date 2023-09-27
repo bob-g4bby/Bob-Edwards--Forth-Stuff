@@ -108,7 +108,7 @@ HEX
 
 : REGWRITE 0F AND HOLDCLOCK + DUP DUP 4 P! WRITE + 4 P! 4 P! ;
 
-( Set the clock, 23 9 27 4 10 32 0 WRITECLOCK = 27th Sept 2023 10:32:00 am )
+( Set the clock, 23 9 27 4 10 32 0 WRITECLOCK = 27th Sept 2023 Wednesday 10:32:00 am )
 : WRITECLOCK                    ( year month day weekday hr min sec -- )
     0 INITPIO                   ( set for 4 bits o/p )
     SETHOLD
