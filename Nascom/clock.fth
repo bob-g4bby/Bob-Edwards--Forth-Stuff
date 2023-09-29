@@ -56,15 +56,17 @@ HEX
     1 INITPIO                    ( 4 bit i/p from clock )
     SETHOLD                      ( stop clock count )
     READ 4 P!                    ( set clock to read )
-    -1 0C DO                     ( produces C A 8 6 4 2 0 )
+    -1 0C DO                     ( this loop produces C A 8 7 5 3 1 )
         I 5 P!                   ( set register addr reqd )
-        REGREAD I 5 = 
+        5 MS
+        REGREAD
+        I 5 = I 8 = OR           ( mask off 2 MS bits for these bytes )
         IF
             3 AND
         THEN
         I 6 = 
         IF
-                R> 1+ >R
+                R> 1+ >R         ( adjust the loop count because of weekday only being one byte )
         ELSE
                 I 1 - 5 P! REGREAD ( read ls digit )
                 SWAP 0A * +       ( form whole value )
@@ -72,24 +74,11 @@ HEX
     -2 +LOOP
     0 4 P! ;                      ( & drop read,hold )
 
-: READC
-    1 INITPIO                    ( 4 bit i/p from clock )
-    SETHOLD                      ( stop clock count )
-    READ 4 P!                    ( set clock to read )
-    0D 0 DO                     ( produces C A 8 6 4 2 0 )
-        I 5 P!                   ( set register addr reqd )
-        1 MS
-        REGREAD
-    LOOP
-    0 4 P! ;                      ( & drop read,hold )
-
 : CASE <BUILDS SMUDGE ] DOES> SWAP 1 - 2 * + @ EXECUTE ;
-
 
 : MON ." Mon" ; : TUES ." Tues" ; : WED ." Wednes" ;
 : THURS ." Thurs" ; : FRI ." Fri" ; : SAT ." Satur" ;
 : SUN ." Sun" ;
-
 CASE DAY SUN MON TUES WED THURS FRI SAT ;
 : DAY. DAY ." day" ;
 
@@ -97,7 +86,6 @@ CASE DAY SUN MON TUES WED THURS FRI SAT ;
 : APR ." April" ; : MAY ." May" ; : JUN ." June" ;
 : JUL ." July" ; : AUG ." August" ; : SEP ." September" ;
 : OCT ." October" ; : NOV ." November" ; : DEC ." December" ;
-
 CASE MONTH. JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC ;
 
 HEX
@@ -153,6 +141,7 @@ HEX
         ELSE
             DUP SECS ! TIME. 
         THEN
+        200 MS
         ?TERMINAL
     UNTIL ;
  
