@@ -1,5 +1,6 @@
 ( driver for OKI MSM5832 clock chip - Bob Edwards 1982, 2023 )
 ( clock is connected to the standard pio on a nascom )
+( N.B. this is set as a 24 hr clock
 
 FORTH DEFINITIONS
 HEX
@@ -66,7 +67,7 @@ HEX
         THEN
         I 6 = 
         IF
-                R> 1+ >R         ( adjust the loop count because of weekday only being one byte )
+                R> 1+ >R         ( adjust the loop count because of weekday )
         ELSE
                 I 1 - 5 P! REGREAD ( read ls digit )
                 SWAP 0A * +       ( form whole value )
@@ -105,6 +106,9 @@ HEX
             DROP I 5 P! REGWRITE
             R> 1 - >R
         ELSE
+            I 4 = IF
+                8 OR           ( SET CLOCK FOR 24 HR WORKING )
+            THEN
             I 1+ 5 P! REGWRITE
             I 5 P! REGWRITE
         THEN
@@ -114,7 +118,7 @@ HEX
 DECIMAL
 
 ( display the time and date )
-: TIME.                         ( year month day weekday hr min sec -- )
+: TIME.                         ( yearCOLD month day weekday hr min sec -- )
     >R >R 2 .R ."  Hrs "
     R> 2 .R ."  Mins "
     R> 2 .R ."  Secs " CR
@@ -146,4 +150,5 @@ HEX
     UNTIL ;
  
 DECIMAL
+
  
