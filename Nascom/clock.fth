@@ -1,6 +1,6 @@
 ( driver for OKI MSM5832 clock chip - Bob Edwards 1982, 2023 )
 ( clock is connected to the standard pio on a nascom )
-( N.B. this is set as a 24 hr clock
+( N.B. this is set as a 24 hr clock )
 
 FORTH DEFINITIONS
 HEX
