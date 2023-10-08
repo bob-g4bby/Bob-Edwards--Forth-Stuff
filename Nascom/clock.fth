@@ -75,7 +75,7 @@ HEX
     -2 +LOOP
     0 4 P! ;                      ( & drop read,hold )
 
-: CASE <BUILDS SMUDGE ] DOES> SWAP 1 - 2 * + @ EXECUTE ;
+: CASE <BUILDS SMUDGE ] DOES> SWAP 2 * + @ EXECUTE ;
 
 : MON ." Mon" ; : TUES ." Tues" ; : WED ." Wednes" ;
 : THURS ." Thurs" ; : FRI ." Fri" ; : SAT ." Satur" ;
@@ -134,7 +134,7 @@ HEX
 
 ( display the time and date at the top of the screen )
 ( back to forth prompt when a key is pressed )
-: TEST                          ( -- )
+: CLOCKTEST                          ( -- )
     CLEARSCREEN
     DECIMAL
     BEGIN
