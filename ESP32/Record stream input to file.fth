@@ -31,7 +31,7 @@ create crlf 13 C, 10 C,
             swap
             tib swap
             R@ WRITE-FILE throw             \ No, so write the line to the open file
-            crlf 2 R@ WRITE-FILE throw      \ and terminate line with cr-lf
+            crlf 1+ 1 R@ WRITE-FILE throw   \ and terminate the line
         THEN
     UNTIL                                   \ repeat until <EOF> found
     R> CLOSE-FILE throw                     \ Close the file
