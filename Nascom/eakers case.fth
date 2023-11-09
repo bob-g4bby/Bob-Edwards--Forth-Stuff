@@ -31,3 +31,9 @@
         ." WHATEVER "
     ENDCASE
 ;
+
+5 TEST
+0 TEST
+2 TEST
+11 TEST
+101 TEST
