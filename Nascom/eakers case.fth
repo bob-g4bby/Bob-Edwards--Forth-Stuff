@@ -1,0 +1,33 @@
+( Eaker's CASE statement from Forth Dimensions Vol II No. 3)
+
+: CASE
+    ?COMP CSP @ !CSP 4
+; IMMEDIATE
+
+: OF
+    4 ?PAIRS COMPILE OVER COMPILE = COMPILE 0BRANCH
+    HERE 0 , COMPILE DROP 5
+; IMMEDIATE
+
+: ENDOF
+    5 ?PAIRS COMPILE BRANCH HERE 0 ,
+    SWAP 2 [COMPILE] ENDIF 4
+; IMMEDIATE
+
+: ENDCASE
+    4 ?PAIRS COMPILE DROP
+    BEGIN SP@ CSP @ = 0=
+    WHILE 2 [COMPILE] ENDIF REPEAT
+    CSP !
+; IMMEDIATE
+
+( TEST )
+
+: TEST      ( N -- )
+    CASE
+        0 OF ." ZERO " ENDOF
+        2 OF ." TWO " ENDOF
+        5 OF ." FIVE " ENDOF
+        ." WHATEVER "
+    ENDCASE
+;
