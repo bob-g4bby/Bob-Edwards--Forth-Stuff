@@ -13,6 +13,6 @@
  
  recursion.fth - Adds the ability for a forth word to call itself until some limit is met
  
- spell.fth - e.g. SPELL <wordname> -- Decompile a word in the dictionary for debug purposes
+ spell.fth - e.g. SPELL 'wordname' -- Decompile a word in the dictionary for debug purposes
  
  throw-catch.fth - an error management system that works a bit like the 'back button' in a web browser. Automatically cleans up the stacks and returns with a non-zero error code. Zero error code means 'no error'
