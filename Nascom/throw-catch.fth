@@ -60,7 +60,7 @@ DECIMAL
 : /. ( A B -- )
   OVER . ." DIVIDED BY " DUP . ." IS "
   [ ' / ] LITERAL CATCH 
-  IF
+  DIV0ERROR = IF
     DROP DROP
     ." INFINITY "
   ELSE
