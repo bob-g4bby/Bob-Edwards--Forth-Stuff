@@ -11,8 +11,6 @@
  
  eakers case.fth - A more versatile case statement with example
  
- headless code.fth - Creating words without a dictionary entry - compilation leaves start address on stack
- 
  recursion.fth - Adds the ability for a forth word to call itself until some limit is met
  
  spell.fth - e.g. SPELL 'wordname' -- Decompile a word in the dictionary for debug purposes
