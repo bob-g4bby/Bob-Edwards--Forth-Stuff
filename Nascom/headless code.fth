@@ -4,7 +4,7 @@ HEX
 
 15FE CONSTANT (:)           ( the inner interpreter cfa )
 
-: HEADLESS:
+: NONAME:
     HERE !CSP (:) , [COMPILE] ]
 ;
 
