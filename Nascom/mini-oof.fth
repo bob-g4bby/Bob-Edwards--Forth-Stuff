@@ -1,5 +1,5 @@
-( Mini-OOF for Nasforth ver. 1 - adapted from )
-( Bernd Paysan's original design by Bob Edwards )
+( Mini-OOF for Nasforth ver. 2 - adapted from )
+( Bernd Paysan's original design by Bob Edwards - Nov 2023 )
 ( see https://bernd-paysan.de/mini-oof.html )
 
 ( Compatibility words )
@@ -102,6 +102,19 @@ CREATE OBJECT  1 CELLS , 2 CELLS ,
     HERE OVER @ ALLOT SWAP OVER !
 ;
 
+( And sometimes derived classes want to access the method of the parent object. )
+( There are two ways to achieve this with this OOF: first, )
+( you could use named words, )
+( and second, you could look up the vtable of the parent object )
+( NB use this early binding word within a definition only, )
+( it doesn't work outside a definition )
+: :: ( class "methodname" -- )
+  [COMPILE] ' 2+ @ + @ ,
+;
+( this is an 'early binding' method selection, as the addr is resolved )
+( during compilation. Use: MYOBJECT MYCLASS :: MYMETHOD )
+( e.g. : TEST TIMER1 [ TIMER :: TPRINT ] CR ; )
+
 ( Example code )
 
 OBJECT CLASS
@@ -125,11 +138,11 @@ PET CLASS
     METHOD  HAPPY    ( cats can do more than pets )
 END-CLASS CAT
 
-:NONAME ." CAT PURRS" DROP ; CAT DEFINES HAPPY
+:NONAME ." cat purrs" DROP ; CAT DEFINES HAPPY
 
 ( cats override pets for these two methods )
-:NONAME ." CAT SAYS MEOW" DROP   ; CAT DEFINES SPEAK
-:NONAME ." CAT RAISES TAIL" DROP ; CAT DEFINES GREET
+:NONAME ." cat says meow" DROP   ; CAT DEFINES SPEAK
+:NONAME ." cat raises tail" DROP ; CAT DEFINES GREET
 
 ( create a cat and dog object to work with )
 CAT NEW CONSTANT TIBBY
