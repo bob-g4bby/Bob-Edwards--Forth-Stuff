@@ -161,3 +161,5 @@ FIDO HEIGHT @ . CR
 
 TIBBY WALK          ( notice tibby is a pet so she can walk OK )
 34 56 FIDO ADD.     ( and the parent methods are inherited )
+
+TIBBY HAPPY         ( and that the cat does more than the dog object )
