@@ -11,6 +11,8 @@
  
  eakers case.fth - A more versatile case statement with example
  
+ mini-oof.fth - Bernd Paysan's famous object oriented program library adapted for Nasforth - simple yet powerful tool
+ 
  recursion.fth - Adds the ability for a forth word to call itself until some limit is met
  
  spell.fth - e.g. SPELL 'wordname' -- Decompile a word in the dictionary for debug purposes
