@@ -13,6 +13,8 @@
  
  mini-oof.fth - Bernd Paysan's famous object oriented program library adapted for Nasforth - simple yet powerful tool
  
+ nasforth expansion.fth - Greatly expands code space to 30k+ bytes for Polydos Nasforth. Doesn't work for the original RAM disk Nasforth as the RAM disk area is eliminated. 
+ 
  recursion.fth - Adds the ability for a forth word to call itself until some limit is met
  
  spell.fth - e.g. SPELL 'wordname' -- Decompile a word in the dictionary for debug purposes
