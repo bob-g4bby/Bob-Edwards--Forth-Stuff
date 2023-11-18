@@ -11,14 +11,6 @@
 ( No. of bytes per 'long' in Nasforth )
 2 CONSTANT CELL
 
-: CELLS ( n -- n x CELL )
-    CELL *
-;
-
-: CELL+ ( n -- n + CELL )
-    CELL +
-;
-
 : 2DUP  ( n1 n2 -- n1 n2 n1 n2 )
     OVER OVER
 ;
@@ -102,7 +94,8 @@ CREATE OBJECT  1 CELLS , 2 CELLS ,
     HERE OVER @ ALLOT SWAP OVER !
 ;
 
-( And sometimes derived classes want to access the method of the parent object. )
+( And sometimes derived classes want to )
+( access the method of the parent object )
 ( There are two ways to achieve this with this OOF: first, )
 ( you could use named words, )
 ( and second, you could look up the vtable of the parent object )
