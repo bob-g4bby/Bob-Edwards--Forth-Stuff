@@ -1,6 +1,8 @@
 # Bob Edwards' Forth Stuff
 
- These programs for Nasforth, a fig-forth programming tool-set for the Nascom Z80 based microcomputer.
+ I've written a glossary for Nasforth, , a fig-forth programming tool-set for the Nascom Z80 based microcomputer, as part of a hyperlinked Nascom documentation package available here https://github.com/bob-g4bby/Bob-Edwards--Nascom--Stuff/tree/main/Documentation/Table%20of%20Contents%20experiment
+
+ The following programs are for Nasforth:-
 
   case.fth - a simple case statement to handle sequential integers 0 - n
  
