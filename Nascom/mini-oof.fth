@@ -85,7 +85,6 @@ CREATE OBJECT  1 CELLS , 2 CELLS ,
 ( USAGE - after a nameless method definition - )
 ( :noname .... ; classname DEFINES methodname )
 : DEFINES ( xt class -- )
-    ( ' @ + ! )         ( misses METHOD number by a cell - too low )
     [COMPILE] ' 2+ @ + !
 ;
 
@@ -110,6 +109,7 @@ CREATE OBJECT  1 CELLS , 2 CELLS ,
 
 ( Example code )
 
+( create a PET class )
 OBJECT CLASS
     CELL VAR TEETH#
     CELL VAR HEIGHT
@@ -119,21 +119,25 @@ OBJECT CLASS
     METHOD ADD.
 END-CLASS PET
 
+( define all the actions for the PET methods )
 :NONAME ." pet speaks" DROP ; PET DEFINES SPEAK
 :NONAME ." pet greets" DROP ; PET DEFINES GREET
 :NONAME ." pet walks"  DROP ; PET DEFINES WALK
 :NONAME  DROP + ." n1 + n2 = " . ; PET DEFINES ADD.
 
+( create a DOG class which varies from PET slightly )
 PET CLASS
+    CELL VAR LENGTH  ( dogs have an extra VAR )
 END-CLASS DOG
 
+( create a CAT class which varies slightly from PET )
 PET CLASS
-    METHOD  HAPPY    ( cats can do more than pets )
+    METHOD  HAPPY    ( cats have one more method than pets )
 END-CLASS CAT
 
 :NONAME ." cat purrs" DROP ; CAT DEFINES HAPPY
 
-( cats override pets for these two methods )
+( cats 'override' pets - they do something different for these two methods )
 :NONAME ." cat says meow" DROP   ; CAT DEFINES SPEAK
 :NONAME ." cat raises tail" DROP ; CAT DEFINES GREET
 
@@ -141,18 +145,25 @@ END-CLASS CAT
 CAT NEW CONSTANT TIBBY
 DOG NEW CONSTANT FIDO
 
+( set the variables in TIBBY and FIDO )
 20 TIBBY TEETH# !
 30 FIDO TEETH# !
 50 TIBBY HEIGHT !
 75 FIDO HEIGHT !
+120 FIDO LENGTH !
 
+
+( run some of the methods in TIBBY and FIDO )
 TIBBY GREET
 FIDO SPEAK
+TIBBY HAPPY         ( the cat does more than the dog object )
 
+( read back the variables in TIBBY and FIDO )
 TIBBY TEETH# @ . CR
 FIDO HEIGHT @ . CR
+FIDO LENGTH @ . CR
 
+( inheritance - doing stuff your parent CLASS can do )
 TIBBY WALK          ( notice tibby is a pet so she can walk OK )
-34 56 FIDO ADD.     ( and the parent methods are inherited )
+34 56 FIDO ADD.     ( the parent methods in PET are 'inherited' )
 
-TIBBY HAPPY         ( and that the cat does more than the dog object )
