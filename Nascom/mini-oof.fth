@@ -51,6 +51,7 @@ DECIMAL
 ;
 
 ( VAR enables creating variables - this an object's data )
+( size is in bytes, so use CELL to give a 16 bit variable etc. )
 : VAR ( m v size -- m v' )
     <BUILDS
         OVER , +
