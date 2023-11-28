@@ -579,7 +579,7 @@ DEPTH$ 1 <
 ENDNUM :="  "
 
 ( Convert top of string stack to a double number )
-: $>N ( -- d ) ( ss: str -- )
+: $>D ( -- d ) ( ss: str -- )
     ENDNUM >$ +$    ( terminate number with a space )
     ($SP@)
     DUP C@
@@ -591,7 +591,7 @@ ENDNUM :="  "
 ;
 
 ( Pushes the double number on the data stack to the string stack )
-: N>$ ( d -- ) ( ss: -- str )
+: D>$ ( d -- ) ( ss: -- str )
     SWAP OVER DABS <# #S SIGN #> ($")
 ;
 
