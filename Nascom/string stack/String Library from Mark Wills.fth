@@ -590,12 +590,8 @@ ENDNUM :="  "
     DROP$
 ;
 
-: $DUMP
-    ($SP@) 50 DUMP
-;
-
-( Pushes the signed number on the data stack to the string stack )
-: N>$ ( n -- ) ( ss: -- str )
+( Pushes the double number on the data stack to the string stack )
+: N>$ ( d -- ) ( ss: -- str )
     SWAP OVER DABS <# #S SIGN #> ($")
 ;
 
