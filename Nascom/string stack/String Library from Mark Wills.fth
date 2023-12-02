@@ -147,23 +147,28 @@ VARIABLE ($SP)              ( create the string stack pointer )
     HERE C@ CMOVE       ( copy the string )
 ;    
 
+( move counted string to string stack )
 : ($") ( addr len -- ) ( ss: -- str )
      DUP CELL+ (SET$SP)
      DUP ($SP@) ! ($SP@) CELL+ SWAP CMOVE ($DEPTH+)
 ;
 
-: (DO$")    ( -- adr length )
-   34 WORD HERE DUP C@ >R 1+ R> 
+( receive string from what follows in input stream until terminator " )
+: (DO$")
+    R COUNT DUP 1+ R> + >R ($")
 ;
-
+ 
 ( string to string stack )
-: $" ( tib:"string" -- ) ( ss: -- str)
-    STATE @ IF
-        COMPILE (DO$") COMPILE ($")
+: $"
+    34                         ( trailing " )
+    STATE @
+    IF
+        COMPILE (DO$")
+        WORD HERE C@ 1+ ALLOT
     ELSE
-        (DO$") ($")
+        WORD HERE COUNT ($")
     THEN
-; IMMEDIATE 
+; IMMEDIATE
 
 ( Moves a string constant to the string stack )
 : >$ ( $Caddr -- ) ( ss: -- str)
