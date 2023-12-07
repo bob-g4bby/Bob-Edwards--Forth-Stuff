@@ -3,7 +3,7 @@
 DECIMAL
 
 ( .BYTE is an internal component of DUMP )
-: .BYTE     ( n -- )
+: .BYTE                     ( n -- )
     DUP 15 >
     IF
         .
@@ -13,7 +13,7 @@ DECIMAL
 ;
 
 ( .ASCII is an internal component of DUMP )
-: .ASCII    ( n -- )
+: .ASCII                    ( n -- )
     DUP 31 > OVER 127 < AND OVER 127 > OR
     IF
         EMIT
@@ -27,12 +27,12 @@ DECIMAL
 : DUMP      ( adr n -- )
     BASE @ >R HEX CR
     BEGIN
-        OVER .                      ( print the memory address )
-        8 0 DO                      ( 8 bytes per line )
-            OVER I + C@ .BYTE       ( print the memory contents )
+        OVER U.                  ( print the memory address )
+        8 0 DO                   ( 16 bytes per line )
+            OVER I + C@ .BYTE    ( print the memory contents )
         LOOP
         8 0 DO
-            OVER I + C@ .ASCII      ( if printable, ASCII letter )
+            OVER I + C@ .ASCII   ( if printable, ASCII letter )
         LOOP
         >R 8 + R> 8 -
         CR
@@ -42,9 +42,3 @@ DECIMAL
     R> BASE !
 ;
 
-( Dump a string contents )
-: DUMP$      ( adr n -- )
-    DROP
-    DUP 2 - C@   ( reveal the max count of the string )
-    DUMP
-;

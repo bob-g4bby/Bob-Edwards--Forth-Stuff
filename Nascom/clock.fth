@@ -73,7 +73,7 @@ HEX
                 SWAP 0A * +       ( form whole value )
         THEN
     -2 +LOOP
-    0 4 P! ;                      ( & drop read,hold )
+    0 4 P! ;                      ( drop read & hold )
 
 : CASE <BUILDS SMUDGE ] DOES> SWAP 2 * + @ EXECUTE ;
 
@@ -95,7 +95,8 @@ HEX
 
 : REGWRITE 0F AND HOLDCLOCK + DUP DUP 4 P! WRITE + 4 P! 4 P! ;
 
-( Set the clock, 23 0 27 0 14 32 0 WRITECLOCK = 27th January 2023 Sunday 2:32:00 pm )
+( Set the clock )
+( 23 0 27 0 14 32 0 WRITECLOCK = 27th January 2023 Sunday 2:32:00 pm )
 : WRITECLOCK                    ( year month day weekday hr min sec -- )
                                 ( N.B. weekday 0-6 , month 0 - 11 )
     0 INITPIO                   ( set for 4 bits o/p )
@@ -119,7 +120,7 @@ HEX
 DECIMAL
 
 ( display the time and date )
-: TIME.                         ( yearCOLD month day weekday hr min sec -- )
+: TIME.                         ( year month day weekday hr min sec -- )
     >R >R 2 .R ."  Hrs "
     R> 2 .R ."  Mins "
     R> 2 .R ."  Secs " CR
@@ -144,12 +145,13 @@ HEX
         IF
             SP!
         ELSE
-            DUP SECS ! TIME. 
+            DUP SECS ! TIME.
         THEN
         200 MS
         ?TERMINAL
     UNTIL ;
  
 DECIMAL
+
 
  

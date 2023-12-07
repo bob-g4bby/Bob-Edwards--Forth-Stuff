@@ -6,7 +6,7 @@
 ;
 
 ( RP! & SP! used to mean reset stack pointers to R0 or S0 )
-( Modern forths have the following definition )
+( Modern forths have the following definitions )
 ( Set data stack pointer = addr )
 CODE SPSET  ( addr -- )
     H POP
