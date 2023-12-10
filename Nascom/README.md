@@ -4,6 +4,8 @@
 
  The following programs are for Nasforth:-
 
+  auto-loading a disk file.fth - if a word is entered on the user terminal the system does not recognise, then a search is made on disk for a file of the same name. If found, this file will be loaded as source code
+
   case.fth - a simple case statement to handle sequential integers 0 - n
  
   clock.fth - [using this circuit](https://github.com/bob-g4bby/Bob-Edwards--Nascom--Stuff/blob/main/Circuits/nascom%20clock%20circuit.pdf), adds a clock to the Nascom, driven by the PIO
@@ -21,4 +23,6 @@
  
  spell.fth - e.g. SPELL 'wordname' -- Decompile a word in the dictionary for debug purposes
  
- throw-catch.fth - an error management system that works a bit like the 'back button' in a web browser. Automatically cleans up the stacks and returns with a non-zero error code. Zero error code means 'no error'
+ String Library from Mark Wills.fth - Adds a string stack to the system with many string manipulation words - recommended
+ 
+ throw-catch.fth - an error management system that works a bit like the 'back button' in a web browser. Automatically cleans up the stacks and returns if an error is non-zero.
