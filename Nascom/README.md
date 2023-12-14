@@ -26,3 +26,12 @@
  String Library from Mark Wills.fth - Adds a string stack to the system with many string manipulation words - recommended
  
  throw-catch.fth - an error management system that works a bit like the 'back button' in a web browser. Automatically cleans up the stacks and returns if an error is non-zero.
+ 
+ polyforth.cas - Under Polydos, use the NASSYS R command to read this file into memory via the serial port. Then use the Polydos command SAVE POLY4TH.GO 1000 5200 1000 1000 to save the file to disk. This is an image of the expanded Polydos Nasforth system, which will indicate 26944 bytes available for code when the word FREE is executed. It includes modules :-
+    auto-loading a disk file.fth
+    dump.fth
+    eakers case.fth
+    spell.fth
+    String Library from Mark Will.fth
+    throw-catch.fth
+    
