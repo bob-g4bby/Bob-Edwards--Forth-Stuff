@@ -10,10 +10,6 @@ HEX
     ?EXEC HERE !CSP (:) , [COMPILE] ]
 ;
 
-: NONAME;
-    [ (;) ,
-;
-
 ( TEST )
 
 :NONAME 3 * . ;           ( -- startaddr )

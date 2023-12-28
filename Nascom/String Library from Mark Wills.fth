@@ -600,4 +600,45 @@ ENDNUM :="  "
     SWAP OVER DABS <# #S SIGN #> ($")
 ;
 
+( starting from the left )
+( split string 1 into string1 & string3 )
+( - string3 holds chr n )
+: LSPLIT$    ( n -- ss: string1 -- string2 string3 )
+    DUP LEFT$   ( split off left string )
+    SWAP$ LEN$  ( find length of original )
+    SWAP -      ( calc length of string3 )
+    RIGHT$      ( produce string3 )
+    SWAP$ DROP$ SWAP$  ( tidy up string stack )
+;
+
+( starting from the right )
+( split string 1 into string1 & string3 )
+( - string3 holds chr n )
+: RSPLIT$    ( n -- ss: string1 -- string2 string3 )
+    REV$
+    LSPLIT$
+    REV$ SWAP$
+    REV$ SWAP$
+;
+
+( split top of string stack into individual words )
+: PARSE$    ( -- n ss: string -- word1 word2 .. wordn )
+    LEN$ 1 =
+    TRIM$
+    IF
+        0
+    ELSE
+        1
+        BEGIN
+            32 FINDC$ DUP
+        -1 <> WHILE
+            LSPLIT$
+            SWAP$
+            LTRIM$
+            1+
+        REPEAT
+        DROP
+    THEN
+;
+
 BASE !

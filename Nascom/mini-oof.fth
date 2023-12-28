@@ -17,7 +17,7 @@
 
 ( flag=true if n1<>n2 )
 : <>    ( n1 n2 -- flag )
-    = 1 XOR
+    = 0=
 ;
 
 ( remove n chrs from the front of the counted byte block )
@@ -41,6 +41,7 @@ DECIMAL
 
 ( MINI-OOF words )
 
+( METHOD  enables creating code - this is what an object can do )
 : METHOD
     <BUILDS              ( m v -- m' v )
         OVER ,          ( compile m )
