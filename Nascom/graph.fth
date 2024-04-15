@@ -149,7 +149,28 @@ DECIMAL
 
 : HELLO H E L L O 0 10 MOVEBY B O B ;
 
-: HI HIRES BEGIN CHECKRESOURCE 255 RND 383 RND MOVETO HELLO PAUSE UNTIL ;
+( Move cursor to x,y on screen, 0,0 being top left of the screen )
+: ATXY                        ( y x -- )
+    DUP 47 U<
+    IF 
+        SWAP DUP 14 U<
+        IF
+            64 * + 2058 + CURSOR !
+        ELSE
+            DROP DROP
+        THEN
+    THEN ;
+  
+: HI
+ HIRES
+ BEGIN
+    CHECKRESOURCE
+    255 RND 383 RND MOVETO
+    HELLO
+    10 1 ATXY
+    ." RESOURCE = " RESOURCE 4 .R 
+    PAUSE
+ UNTIL ;
 
 : WELCOME
     HIRES
@@ -161,19 +182,7 @@ DECIMAL
         110 75 MOVETO HELLO
         PAUSE
     UNTIL ;
-
-( Move cursor to x,y on screen, 0,0 being top left of the screen )
-: ATXY                        ( x y -- )
-    DUP 47 U<
-    IF 
-        SWAP DUP 14 U<
-        IF
-            64 * + 2058 + CURSOR !
-        ELSE
-            DROP DROP
-        THEN
-    THEN ;
-    
+  
 0 VARIABLE XAXIS
 0 VARIABLE YAXIS
 
@@ -204,8 +213,6 @@ HEX
 <BUILDS SMUDGE ]
 DOES> 2 - >R BEGIN R> 2+ DUP >R
 @ EXECUTE UNTIL R> DROP ;
-
-
 
 ( Original hardware long gone, but it connected to port 3 )
 : JOYSTICK ( --- Y X )
