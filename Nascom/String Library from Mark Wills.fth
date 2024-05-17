@@ -249,7 +249,7 @@ VARIABLE ($SP)              ( create the string stack pointer )
 ;
 
 ( rotate strings )
-: -ROT ( -- ) ( ss: s3 s2 s1 -- s1 s3 s2)
+: -ROT$ ( -- ) ( ss: s3 s2 s1 -- s1 s3 s2)
      ($SP@)
      2 PICK$ 2 PICK$
      4 (ADDROF$) DUP (SIZEOF$) + 1- ( end of string4 is destination )
