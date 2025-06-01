@@ -1,4 +1,6 @@
 ( driver for OKI MSM5832 clock chip - Bob Edwards 1982, 2023 )
+( Version 2 - fixes bug with months register )
+( Months are counted as 1-12. I had assumed they would be 0-11, which is wrong )
 ( clock is connected to the standard pio on a nascom )
 ( N.B. this is set as a 24 hr clock )
 
@@ -87,7 +89,7 @@ CASE DAY SUN MON TUES WED THURS FRI SAT ;
 : APR ." April" ; : MAY ." May" ; : JUN ." June" ;
 : JUL ." July" ; : AUG ." August" ; : SEP ." September" ;
 : OCT ." October" ; : NOV ." November" ; : DEC ." December" ;
-CASE MONTH. JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC ;
+CASE MONTH. 0 JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC ;
 
 HEX
 
@@ -96,9 +98,9 @@ HEX
 : REGWRITE 0F AND HOLDCLOCK + DUP DUP 4 P! WRITE + 4 P! 4 P! ;
 
 ( Set the clock )
-( 23 0 27 0 14 32 0 WRITECLOCK = 27th January 2023 Sunday 2:32:00 pm )
+( 23 1 27 0 14 32 0 WRITECLOCK = 27th January 2023 Sunday 2:32:00 pm )
 : WRITECLOCK                    ( year month day weekday hr min sec -- )
-                                ( N.B. weekday 0-6 , month 0 - 11 )
+                                ( N.B. weekday 0-6 , month 1 - 12 )
     0 INITPIO                   ( set for 4 bits o/p )
     SETHOLD
     0D 0 DO
