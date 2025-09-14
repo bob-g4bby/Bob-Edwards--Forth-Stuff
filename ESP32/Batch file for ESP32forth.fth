@@ -6,7 +6,7 @@
 \ the file can contain a list of commands to interpret or words to compile, run & forget etc
 \ The feature can be turned on with ON BATCH and normal 'word not found' behaviour restored with OFF BATCH
 
-\ N.B. Requires this string library loaded first - https://esp32.arduino-forth.com/listing/page/text/strings
+\ N.B. Requires this string library from Marc Petremann loaded first - https://esp32.arduino-forth.com/listing/page/text/strings
 
 forth definitions
 only forth also internals
