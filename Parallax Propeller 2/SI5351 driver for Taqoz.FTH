@@ -264,7 +264,7 @@ DUP LASTREG C@ 1+ =							--- is this register = last register +1?
 
 
 --- part of sendFMD and sendOMD
-pri sendbytes	( ptr_to_data -- )
+pri sendbytes	( ptr_to_new_data -- )
 3 FOR										--- Do for all 3 bytes, decrementing new byte pointer
 	DUP I - C@ 1@ C@ <>						--- Are the new and old byte values different?
 		IF
