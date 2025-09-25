@@ -1,0 +1,18 @@
+The SI5351 driver code controls the frequency of the two independent channels of an SI5351 RF signal generator chip over the range 8kHz to 120MHz.
+
+N.B. Two constants may need altering:-
+
+fref needs changing to the clock frequency driving your SI5351. This requires measurement of the CLK0 or CLK1 output by a frequency counter or calibrated receiver.
+
+The commands are as follows:-
+
+RFinit ( -- ) Initialise the SI5351 ready for use - must be called before any of the command below. Turns output pins CLK0 and CLK1 off ( no output pulses )
+CLK0 ( -- ) Select the output from pin CLK0 as the currently selected channel - all commands will go to that channel until the other channel is selected
+CLK1 ( -- ) Select the output from pin CLK1 as the currently selected channel - all commands will go to that channel until the other channel is selected
+RFtune ( frequency -- ) Set the currently selected channel to 'frequency' Hz. This has been tested over the frequency range 8000 to 120000000 Hz
+RFon ( -- ) Turn the currently selected channel on, approx 3.3V high pulses will appear at the output
+RFoff ( -- ) Turn the currently selected channel off ( 0V )
+
+There are some test words at the bottom to check the data being created and read the SI5351 settings. During development, the application note AN619 from SI was useful, as was this website. Referring to the SI5351 diagram on the latter website, my code holds three of the frequency setting parameters constant - e=0, f=1 and c = 1048575, to simplify the maths. The value of c is the largest permitted and this allows b to vary over the widest range and thus give the smallest tuning resolution. The OMD division ratio is maintained as an even integer which is said to minimise clock jitter. All these simplifications are to improve tuning speed, when controlled by a rotary encoder, so as to sound as smooth as possible - radio enthusiasts spend a lot of time hunting for weak signals, so any notchy tuning artifact would be unwelcome. I've swept the output in frequency and listened to it with a receiver and it sounds like an analogue oscillator, which is great. The precision of the maths means the actual frequency is within about 2Hz of the demanded frequency, so be aware of that.
+
+Only if used in a radio application, for best purity of the signal generated, I've read it's better to use just one channel per SI5351 as the cross talk between channels increases clock jitter slightly. For other applications, it's usually not an issue.
