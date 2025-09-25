@@ -1,4 +1,4 @@
---- SI5351 DRIVER version 2 FOR TACHYON 5V7 Bob Edwards Dec 2020
+--- SI5351 DRIVER version 2 FOR TAQOZ  Bob Edwards Dec 2020
 --- Optimised for radio tuning by minimising the number of bytes sent to the SI5351
 --- when a tuning step is demanded
 
@@ -56,6 +56,7 @@ byte R								--- The R divider parameter
 byte LASTREG						--- address of SI5351 register last written to in autoincrement mode
 byte pllreset						--- pllreset set 1 if pll reset needed
 byte RFactive						--- set to 0 or 1 to select CLK0 or CLK1 as active channel for cmds
+byte changedCLKX                    --- flag set true if CLK0 or CLK1 has been executed
 
 --- Storage definition for one RF channel - remember word and long boundaries
 --- the size of the record has to be maintained a multiple of 4, so all records will be aligned
@@ -83,8 +84,14 @@ RFparam 3 RECORDS RFparams				--- record 0 = CLK0 params, record 1 = CLK1 params
 
 pri RFparams@ RFactive C@ RFparams ; 	( -- adr ) --- start adr of active channel params
 pri RFoldparams@ 2 RFparams ;			( -- adr ) --- start adr of params from last cycle
-pub CLK0 0 RFactive C! ;				( -- ) --- select CLK0 as the active channel
-pub CLK1 1 RFactive C! ;				( -- ) --- select CLK1 as the active channel
+
+pub CLK0 0 RFactive C!  				( -- )     --- select CLK0 as the active channel
+-1 changedCLKX C!                                  --- signal all frequency setting bytes need to be sent
+;
+
+pub CLK1 1 RFactive C!  				( -- )     --- select CLK1 as the active channel
+-1 changedCLKX C!                                  --- signal all frequency setting bytes need to be sent
+;
 
 --- Calculation of SI5351 register values
 
@@ -183,6 +190,15 @@ pri OLDPARAM!	( -- )
 	RFparams@ RFoldparams@ RFparam CMOVE
 	;
 
+pri OLDPARAM<>  ( -- )          --- Set all of Scratchdata <> RFactive, so all frequency setting bytes will get sent
+    RFparam 0 DO
+        RFparams@ I + C@
+        NOT 255 AND
+        RFoldparams@ I + C!
+    LOOP
+;
+
+
 --- calculate and store all parameters in the currently selected channel record
 pri PARAM!	( frequency -- )
 	RFparams@ >R
@@ -214,18 +230,20 @@ pri VFOC@ ( adr -- byte )
 	
 --- Write byte to register adr in si5351
 pri VFOC! ( byte adr -- )
+    --- 2DUP ." VFO!: sending to SI5351 register " . ."  data byte " . CR
 	<I2C vfoadr I2C! I2C! I2C! I2C>
 	;
 
 --- Write a byte to SI5351 register using autoincrement address where possible
 pri INCVFOC! ( byte adr -- )
-DUP LASTREG C@ 1+ =			--- is this register = last register +1?
-IF
-	DROP 
-	I2C!					--- yes, just send the register value
-ELSE
-	<I2C vfoadr I2C! I2C! I2C!	--- no, set up the register address and then send value
-THEN
+    --- 2DUP ." VFO!: sending to SI5351 register " . ."  data byte " . CR
+    DUP LASTREG C@ 1+ =			--- is this register = last register +1?
+    IF
+        DROP 
+        I2C!					--- yes, just send the register value
+    ELSE
+        <I2C vfoadr I2C! I2C! I2C!	--- no, set up the register address and then send value
+    THEN
 ;
 
 --- part of sendFMD and sendOMD
@@ -242,15 +260,15 @@ pri sendbytes	( -- )
 --- Send FMD to the SI5351 - all bytes if 1st time, else only changed bytes
 pri sendFMD	( -- )
 	RFactive C@
-	IF 36 ELSE 28 THEN 2!		--- register start address, depends on active channel selected, store in memory 2
+	IF 36 ELSE 28 THEN 2!		    --- register start address, depends on active channel selected, store in memory 2
 	RFoldparams@ .msna_p1 2 + 1!	--- memory 1 = pointer to MS byte of old .msna_p1
-	RFparams@ .msna_p1 2 +		--- pointer to MS byte of .msna_p1
-	FROM -1 BY 3 FOR			--- Do for all 3 bytes, decrementing new byte pointer
+	RFparams@ .msna_p1 2 +		    --- pointer to MS byte of .msna_p1
+	FROM -1 BY 3 FOR			    --- Do for all 3 bytes, decrementing new byte pointer
 		sendbytes
 	NEXT
 	RFoldparams@ .msna_p2 2 + 1!	--- memory 1 = pointer to MS byte of old .msna_p1
-	RFparams@ .msna_p2 2 +		--- pointer to MS byte of .msna_p1
-	FROM -1 BY 3 FOR			--- Do for all 3 bytes, decrementing new byte pointer
+	RFparams@ .msna_p2 2 +		    --- pointer to MS byte of .msna_p1
+	FROM -1 BY 3 FOR			    --- Do for all 3 bytes, decrementing new byte pointer
 		sendbytes
 	NEXT
 	; 
@@ -354,7 +372,7 @@ OR 3 VFOC!
 ;
 
 --- reset the PLL on the currently active channel
-: RESETPLL
+pub RESETPLL    ( -- )
 RFactive C@
 	IF
 		$80	
@@ -387,6 +405,11 @@ pub RFtune		( frequency -- )
 	  0 LASTREG C!	--- Ensure we get a proper I2C address setting start
 	  OLDPARAM!
 	  PARAM!	--- calculate register values
+      changedCLKX C@ IF      --- are all frequency setting bytes needed to be sent?
+         --- CR ." Sending all bytes" CR
+         OLDPARAM<>          --- ensure all frequency setting bytes sent right after CLK0 or CLK1 cmd
+         0 changedCLKX C!    --- and reset that flag, so only changed bytes sent thereafter
+      THEN
 	  sendOMD	--- send the OMD registers to the SI5351
 	  sendFMD	--- send the FMD registers to the SI5351
 	  I2C>		--- end the i2C transfer
@@ -396,7 +419,7 @@ pub RFtune		( frequency -- )
 	  THEN		--- reset the pll
 ;
 
---- Test Words
+--- Test Words *********************************************************************************************
 
 --- display all params for the selected channel
 pub RFparam.		( -- )

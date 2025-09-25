@@ -1,6 +1,6 @@
 TAQOZ
 
---- SI5351 DRIVER version 2 FOR TAQOZ V2.8 Bob Edwards Dec 2020
+--- SI5351 DRIVER version 3 FOR TAQOZ v2.8 Bob Edwards Dec 2020
 --- Optimised for radio tuning by minimising the number of bytes sent to the SI5351
 --- when a tuning step is demanded
 --- N.B. In the CONSTANTS section, you need to check vfoadr matches your si5351 i2c address
@@ -78,6 +78,7 @@ byte R										--- The R divider parameter
 byte LASTREG								--- address of SI5351 register last written to in autoincrement mode
 byte pllreset								--- pllreset set 1 if pll reset needed
 byte RFactive								--- set to 0 or 1 to select CLK0 or CLK1 as active channel for cmds
+byte changedCLKX                            --- flag set true if CLK0 or CLK1 has been executed
 long @1										--- scratch register 1
 long @2										--- scratch register 2
 
@@ -117,8 +118,14 @@ public
 
 pri RFparams@ RFactive C@ RFparams ; 	( -- adr ) --- start adr of active channel params
 pri RFoldparams@ 2 RFparams ;			( -- adr ) --- start adr of params from last cycle
-pub CLK0 0 RFactive C! ;				( -- )     --- select CLK0 as the active channel
-pub CLK1 1 RFactive C! ;				( -- )     --- select CLK1 as the active channel
+
+pub CLK0 0 RFactive C!	    			( -- )     --- select CLK0 as the active channel
+1 changedCLKX C!                                   --- signal all frequency setting bytes need to be sent
+;
+
+pub CLK1 1 RFactive C!  				( -- )     --- select CLK1 as the active channel
+1 changedCLKX C!                                   --- signal all frequency setting bytes need to be sent
+;
 
 --- Calculation of SI5351 register values
 
@@ -217,10 +224,18 @@ pri OLDPARAM!	( -- )
 	RFparams@ RFoldparams@ RFparam CMOVE
 	;
 
+pri OLDPARAM<>                  --- Set all of Scratchdata <> RFactive, so all frequency setting bytes will get sent
+    RFparam 0 DO
+        RFparams@ I + C@
+        NOT 255 AND
+        RFoldparams@ I + C!
+    LOOP
+;
+
 --- calculate and store all parameters in the currently selected channel record
 pri PARAM!	( frequency -- )
 	RFparams@ >R
-	DUP frequency !			--- o/p frequency in active channel record
+	DUP frequency !			    --- o/p frequency in active channel record
 	RCALC SWAP
 	R C!						--- save the R divider parameter
 	DUP 
@@ -248,13 +263,13 @@ pri VFOC@ ( adr -- byte )
 	
 --- Write byte to register adr in si5351
 pri VFOC! ( byte adr -- )
---- 2DUP ." Sending to SI5351 register " . ." data " . CRLF
+    --- 2DUP ." VFO!: sending to SI5351 register " . ."  data byte " . CRLF
 	<I2C vfoadr I2C! I2C! I2C! I2C>
 	;
 
 --- Write a byte to SI5351 register using autoincrement address where possible
 pri INCVFOC! ( byte adr -- )
---- 2DUP ." Sending to SI5351 register " . ." data " . CRLF  
+    --- 2DUP ." INCVFO!: sending to SI5351 register " . ." data byte " . CRLF  
     DUP LASTREG C@ 1+ =						--- is this register = last register +1?
 	IF
 		DROP 
@@ -423,6 +438,10 @@ pub RFtune		( frequency -- )
 	  0 LASTREG C!							--- Ensure we get a proper I2C address setting start
 	  OLDPARAM!
 	  PARAM!								--- calculate register values
+      changedCLKX C@ IF                     --- are all frequency setting bytes needed to be sent?
+        OLDPARAM<>                          --- ensure all frequency setting bytes sent right after CLK0 or CLK1 cmd
+        0 changedCLKX C!                    --- and reset that flag, so only changed bytes sent thereafter
+      THEN
 	  sendOMD								--- send the OMD registers to the SI5351
 	  sendFMD								--- send the FMD registers to the SI5351
 	  I2C>									--- end the i2C transfer
