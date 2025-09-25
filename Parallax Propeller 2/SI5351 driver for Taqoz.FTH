@@ -1,6 +1,6 @@
 TAQOZ
 
---- SI5351 DRIVER version 2 FOR TACHYON 5V7 Bob Edwards Dec 2020
+--- SI5351 DRIVER version 2 FOR TAQOZ V2.8 Bob Edwards Dec 2020
 --- Optimised for radio tuning by minimising the number of bytes sent to the SI5351
 --- when a tuning step is demanded
 --- N.B. In the CONSTANTS section, you need to check vfoadr matches your si5351 i2c address
@@ -248,13 +248,14 @@ pri VFOC@ ( adr -- byte )
 	
 --- Write byte to register adr in si5351
 pri VFOC! ( byte adr -- )
+--- 2DUP ." Sending to SI5351 register " . ." data " . CRLF
 	<I2C vfoadr I2C! I2C! I2C! I2C>
 	;
 
 --- Write a byte to SI5351 register using autoincrement address where possible
 pri INCVFOC! ( byte adr -- )
-2DUP ." Sending to SI5351 register " . ." data " . CRLF  
-DUP LASTREG C@ 1+ =							--- is this register = last register +1?
+--- 2DUP ." Sending to SI5351 register " . ." data " . CRLF  
+    DUP LASTREG C@ 1+ =						--- is this register = last register +1?
 	IF
 		DROP 
 		I2C!								--- yes, just send the register value
