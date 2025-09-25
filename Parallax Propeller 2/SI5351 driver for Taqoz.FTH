@@ -117,8 +117,8 @@ public
 
 pri RFparams@ RFactive C@ RFparams ; 	( -- adr ) --- start adr of active channel params
 pri RFoldparams@ 2 RFparams ;			( -- adr ) --- start adr of params from last cycle
-pub CLK0 0 RFactive C! ;				( -- ) --- select CLK0 as the active channel
-pub CLK1 1 RFactive C! ;				( -- ) --- select CLK1 as the active channel
+pub CLK0 0 RFactive C! ;				( -- )     --- select CLK0 as the active channel
+pub CLK1 1 RFactive C! ;				( -- )     --- select CLK1 as the active channel
 
 --- Calculation of SI5351 register values
 
@@ -253,6 +253,7 @@ pri VFOC! ( byte adr -- )
 
 --- Write a byte to SI5351 register using autoincrement address where possible
 pri INCVFOC! ( byte adr -- )
+2DUP ." Sending to SI5351 register " . ." data " . CRLF  
 DUP LASTREG C@ 1+ =							--- is this register = last register +1?
 	IF
 		DROP 
@@ -264,8 +265,9 @@ DUP LASTREG C@ 1+ =							--- is this register = last register +1?
 
 
 --- part of sendFMD and sendOMD
-pri sendbytes	( ptr_to_new_data -- )
-3 FOR										--- Do for all 3 bytes, decrementing new byte pointer
+--- assumes @1 stores the previous 32 bit value, @2 stores the first register address to be written to
+pri sendbytes	( ptr_to_data -- )
+3 FOR										--- Do for all 4? bytes, decrementing new byte pointer
 	DUP I - C@ 1@ C@ <>						--- Are the new and old byte values different?
 		IF
 			DUP I -  C@ 2@ INCVFOC!			--- Yes, so send the new byte to the SI5351 register
@@ -285,7 +287,7 @@ pri sendFMD	( -- )
 	RFoldparams@ .msna_p1 2 + 1!			--- memory 1 = pointer to MS byte of old .msna_p1
 	RFparams@ .msna_p1 2 +					--- pointer to MS byte of .msna_p1
 	sendbytes
-	RFoldparams@ .msna_p2 2 + 1!			--- memory 1 = pointer to MS byte of old .msna_p1
+	RFoldparams@ .msna_p2 2 + 1!			--- memory 1 = pointer to MS byte of old .msna_p2
 	RFparams@ .msna_p2 2 +					--- pointer to MS byte of .msna_p2
 	sendbytes
 ; 
