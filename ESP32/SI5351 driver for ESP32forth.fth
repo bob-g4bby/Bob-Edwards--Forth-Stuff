@@ -458,6 +458,7 @@ DROP
 ;
 
 \ Using CLK0, tune from start to stop frequency, stepping 10Hz as fast as possible, stop if key pressed
+\ This produces 1024 steps per second on an ESP32 WROOM 32, so a nice smooth sweep at 10Hz per step
 : RFsweep	( startfreq stopfreq -- )
 RFinit >R
 RFon
