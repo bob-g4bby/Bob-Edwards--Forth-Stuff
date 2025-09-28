@@ -1,4 +1,5 @@
 \ SI5351 RF signal generator driver for ESP32forth - ver. 1.0 by Bob Edwards Sept 2025
+\ Written using ESP32forth version 7.0.7.21
 \ Optimised for radio tuning by minimising data transfers to SI5351
 \ N.B. value fref will need tuning for accurate frequency output
 \ The crystals on the SI5351 modules aren't exactly 25MHz
