@@ -1,7 +1,8 @@
 \ SI5351 RF signal generator driver for ESP32forth - ver. 1.0 by Bob Edwards Sept 2025
 
-\ Written using ESP32forth version 7.0.7.21,b ut will run on v7.0.6.19. Does not run on 7.0.5.4
-\ as Structures are not supported there.
+\ Written using ESP32forth version 7.0.7.21
+\ Does not currently run on v7.0.6.19 maybe due to 'Wire' library changes
+\ Does not compile on v7.0.5.4 since 'Structures' are not supported
 
 \ Optimised for radio tuning by minimising data transfers to SI5351
 \ N.B. value fref will need tuning for accurate frequency output
@@ -23,7 +24,7 @@ forth definitions
 : within    ( n lo hi -- flag )
     1+ over -
     >r - r>
-    < 0<>
+    u< 0<>
 ;
 
 \ returns the bit position 0-31 of the MS bit of n1
