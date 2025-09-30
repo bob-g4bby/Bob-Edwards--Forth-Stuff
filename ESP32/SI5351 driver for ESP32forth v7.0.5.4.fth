@@ -1,6 +1,6 @@
 \ SI5351 RF signal generator driver for ESP32forth - ver. 1.0 by Bob Edwards Sept 2025
 
-\ Adapated to run under ESP32forth version 7.0.5.4
+\ Adapted to run under ESP32forth version 7.0.5.4
 
 \ Optimised for radio tuning by minimising data transfers to SI5351
 \ N.B. value fref will need tuning for accurate frequency output
@@ -255,7 +255,6 @@ CLK0
 only wire also SI5351                   \ 'wire' is the vocabulary with the i2c interface words
 
 \ initialise the I2C interface, define the GPIO pins used
-\ and wait for the SI5351 to initialise
 : Wire.start    ( -- )
     21 22 Wire.begin drop               \ gpio21 set as sda, gpio22 set as scl
 ;
@@ -316,7 +315,7 @@ LOOP
 DROP
 ;
 
-\ Send FMD to the SI5351 - all bytes if 1st time, else only changed bytes
+\ Send FMD to the SI5351 - all bytes if 1st time after CLK0, CLK1 cmd, else only changed bytes
 : sendFMD	( -- )
 	CLK?                                \ read which clock is currently taking commands
 	IF 36 ELSE 28 THEN m2!              \ register start address, depends on active channel selected, store in memory 2
@@ -328,7 +327,7 @@ DROP
 	sendbytes
 ; 
 
-\ Send OMD to the SI5351 - all bytes if 1st time, else only changed bytes
+\ Send FMD to the SI5351 - all bytes if 1st time after CLK0, CLK1 cmd, else only changed bytes
 : sendOMD ( -- )
 	CLK?                                \ read which clock is currently taking commands
 	IF 52 ELSE 44 THEN m2!              \ register start address, depends on active channel selected, store in memory 2
@@ -337,7 +336,7 @@ DROP
 	sendbytes
 ;
 
-\ Wait until SI5351 initialisation complete
+\ Wait until SI5351 initialisation completes
 : VFOINIT?	( -- ) 
 	BEGIN
 		0 VFOC@
@@ -413,6 +412,7 @@ DROP
     AND 3 VFOC!
 ;
 
+\ CLK output disable  for currently selected channel
 : RFoff ( -- )
     3 VFOC@
     CLK?
@@ -582,6 +582,4 @@ CLK1
 ." msna_p1 = " SCRATCHdata .msna_p1 ? CR
 ;
 
-forth definitions
-SI5351
 \ forget *VFOTESTWORDS*
