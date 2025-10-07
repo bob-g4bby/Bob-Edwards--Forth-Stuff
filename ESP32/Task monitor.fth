@@ -191,6 +191,7 @@ variable task-xt
 
 \ display task memory allocated continuously until key pressed - requires ANSI terminal
 : taskmon   ( task-xt dsz rsz -- )
+    base @ >r hex
     rpcount ! spcount ! task-xt !
     task-xt @ dup 'main-task = >r
     'yield-task = r> or
@@ -205,6 +206,7 @@ variable task-xt
         key? until
         show
     then
+    r> base !
 ;
 
 \ Test Tasks **************************************************************************
