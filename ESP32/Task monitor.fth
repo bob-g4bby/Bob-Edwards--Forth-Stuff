@@ -6,6 +6,7 @@
 \ Once a task is finalised the stacks sizes can be reduced.
 
 \ N.B. Load before your multitask application as a modified version of 'task' is used
+\ N.B. Requires an ANSI standard terminal such as Tera Term
 
 \ Each task in the multitasker round robin list has memory allocated as follows:-
 ( executing the taskname puts the address of the linked list pointer on the data stack )
@@ -119,7 +120,7 @@ variable rpaddr                                 \ return stack start address
 variable rpcount                                \ return stack size
 variable task-xt
 
-\ parts of dotaskomn
+\ parts of dotaskmon
 : nextcell      ( -- data address )
     cell memaddr +!
     memaddr @ dup @ swap    
