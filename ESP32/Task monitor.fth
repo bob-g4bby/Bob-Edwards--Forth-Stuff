@@ -185,16 +185,25 @@ variable task-xt
     rpaddr @ dup lookforDB swap - 2 rshift . ." hex cells" cr
 ;
 
+' main-task constant 'main-task
+' yield-task constant 'yield-task
+
 \ display task memory allocated continuously until key pressed - requires ANSI terminal
 : taskmon   ( task-xt dsz rsz -- )
     rpcount ! spcount ! task-xt !
-    hide page    
-    begin
-        0 0 at-xy                                \ display at the top left ...
-        task-xt @ spcount @ rpcount @ dotaskmon  \ the task memory allocation
-        pause                                    \ allow all tasks to run
-    key? until
-    show
+    task-xt @ dup 'main-task = >r
+    'yield-task = r> or
+    if
+        cr ." Only user tasks can be monitored with taskmon" cr
+    else
+        hide page    
+        begin
+            0 0 at-xy                                \ display at the top left ...
+            task-xt @ spcount @ rpcount @ dotaskmon  \ the task memory allocation
+            pause                                    \ allow all tasks to run
+        key? until
+        show
+    then
 ;
 
 \ Test Tasks **************************************************************************
