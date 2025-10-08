@@ -210,6 +210,7 @@ variable task-xt
         begin
             0 0 at-xy                                \ display at the top left ...
             task-xt @ spcount @ rpcount @ dotaskmon  \ the task memory allocation
+            ." Press any key to stop ..."
             pause                                    \ allow all tasks to run
         key? until
         show
@@ -223,18 +224,18 @@ variable count1
 variable count2
 
 \ a couple of tasks to verify the task memory allocation
-: baba
+: counter1
     0 begin 250 ms 1+ dup count1 ! pause again
 ;
 
-' baba $20 $20 task mytask1
+' counter1 $20 $20 task mytask1
 mytask1 start-task
 
-: gaga
+: counter2
     0 begin 500 ms 1+ dup count2 ! pause again
 ;
 
-' gaga $15 $15 task mytask2
+' counter2 $15 $15 task mytask2
  mytask2 start-task
 
 \ show counters until key pressed - check the two tasks are running
