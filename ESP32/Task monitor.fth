@@ -140,6 +140,14 @@ variable task-xt
     until
 ;
 
+\ display n as hexadecimal and decimal
+:   hexdec. ( n -- )
+    decimal
+    dup . ." decimal ("
+    hex
+    . ." hex) "
+;
+
 \ display task memory allocated once
 : dotaskmon      ( task-xt dsz rsz -- )
     dup rpcount !
@@ -181,9 +189,9 @@ variable task-xt
     ." return stack contents:"
     rpaddr @ rpcount @ 1 - dumpl cr
     ."   Data stack usage for this task: "
-    spaddr @ dup cell+ lookforDB swap - 2 rshift . ." hex cells" cr
+    spaddr @ dup cell+ lookforDB swap - 2 rshift hexdec. ." cells" cr
     ." Return stack usage for this task: "
-    rpaddr @ dup lookforDB swap - 2 rshift . ." hex cells" cr
+    rpaddr @ dup lookforDB swap - 2 rshift hexdec. ." cells" cr
 ;
 
 ' main-task constant 'main-task
