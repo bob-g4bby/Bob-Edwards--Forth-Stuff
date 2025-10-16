@@ -143,7 +143,7 @@ init_encoder
 
 \ Test words *********************************************************************
 
-\ display count and time until key press
+\ display 'count' that has been received in 'time' ms until key press
 : relcount.    ( --)
     begin
         250 ms
@@ -153,7 +153,7 @@ init_encoder
     key? until
 ;
 
-\ display count and time until key press
+\ display absolute count until key press
 : abscount.    ( --)
     begin
         250 ms
